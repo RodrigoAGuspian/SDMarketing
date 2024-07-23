@@ -17,10 +17,13 @@ import { db } from '@/utils/firebase';
 import type { Turno } from '@/lib/turno';
 import { useRoute, useRouter } from 'vue-router';
 import type { Modelo } from '@/lib/modelo';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 
-const startDate = ref(new Date());
-const endDate = ref(new Date());
+
+const startDateInput = ref('');
+const endDateInput = ref('');
 const turnos = ref<Turno[]>([]);
 const totalHoras = ref(0);
 const totalGanancias = ref(0);
@@ -28,11 +31,18 @@ const turnosConDetalles = ref<{ turno: Turno; horasTrabajadas: number; ganancias
 
 const route = useRoute();
 const modeloId = route.params.id as string;
+let modelo = {} as Modelo;
 const fetchTurnos = async () => {
-  startDate.value.setHours(0, 0, 0, 0);
-  endDate.value.setHours(23, 59, 59, 999);
-  const startTimestamp = Timestamp.fromDate(startDate.value);
-  const endTimestamp = Timestamp.fromDate(endDate.value);
+
+  const startDate = new Date(startDateInput.value);
+  const endDate = new Date(endDateInput.value);
+  
+
+  console.log("Estoy aqui", startDate, endDate);
+  startDate.setHours(24, 0, 0, 0);
+  endDate.setHours(47, 59, 59, 999);
+  const startTimestamp = Timestamp.fromDate(startDate);
+  const endTimestamp = Timestamp.fromDate(endDate);
   console.log("Estoy aqui", startTimestamp.toDate(), endTimestamp.toDate());
   
   const q = query(
@@ -45,6 +55,7 @@ const fetchTurnos = async () => {
   
   const querySnapshot = await getDocs(q);
   turnos.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Turno));
+  console.log("Estoy aqui", turnos.value);
   calculateReport();
 };
 
@@ -52,18 +63,22 @@ const calculateReport = async () => {
   
   const docRef = doc(db, 'modelos', modeloId);
   const docSnap = await getDoc(docRef);
-  const modelo = { id: docSnap.id, ...docSnap.data() } as Modelo;
+  modelo = { id: docSnap.id, ...docSnap.data() } as Modelo;
+
+  totalHoras.value = 0;
+  totalGanancias.value = 0;
+  turnosConDetalles.value = [];
   
   turnos.value.forEach(turno => {
     try{
-
-      totalHoras.value = 0;
-      totalGanancias.value = 0;
-      turnosConDetalles.value = [];
-      
-      
       let horasTrabajadas = (turno.hasta.seconds - turno.desde.seconds) / 3600;
-      const gananciasTurno = Object.values(turno.ganancias).reduce((acc: number, curr: number) => acc + curr, 0);
+      let gananciasTurno = 0;
+      try {
+        if (turno.ganancias != null){
+          gananciasTurno = Object.values(turno.ganancias).reduce((acc: number, curr: number) => acc + curr, 0);
+        }
+      } catch (error) {}
+
       if (horasTrabajadas < 0){
         horasTrabajadas = 0;
       }
@@ -76,9 +91,53 @@ const calculateReport = async () => {
         gananciasTotales: gananciasTurno,
       });
 
-    }catch(e){
+    }catch(e){}
+  });
+
+  generatePDFReport();
+
+};
+
+const generatePDFReport = () => {
+  const doc = new jsPDF();
+  doc.text("Reporte de Turnos", 10, 10);
+
+  // Datos de la modelo
+  //const modelo = turnosConDetalles.value[0]?.turno.modelo; // Asumiendo que todos los turnos pertenecen al mismo modelo
+  doc.text(`Nombre: ${modelo.nombre}`, 10, 20);
+  doc.text(`Username: ${modelo.username}`, 10, 30);
+  doc.text(`Jornada: ${modelo.jornada}`, 10, 40);
+  doc.text(`Plataformas: ${modelo.plataformas.join(', ')}`, 10, 50);
+
+  // Tabla de turnos
+  const tableColumn = ["ID", "Desde", "Hasta", "Horas Trabajadas", "Ganancias Totales"];
+  const tableRows: any[] = [];
+
+  turnosConDetalles.value.forEach(turnoDetalle => {
+    const turnoData = [
+      turnoDetalle.turno.id,
+      new Date(turnoDetalle.turno.desde.seconds * 1000).toLocaleString(),
+      new Date(turnoDetalle.turno.hasta.seconds * 1000).toLocaleString(),
+      turnoDetalle.horasTrabajadas.toFixed(2),
+      turnoDetalle.gananciasTotales.toFixed(2),
+    ];
+    tableRows.push(turnoData);
+  });
+
+  autoTable(doc, {
+    head: [tableColumn],
+    body: tableRows,
+    startY: 60,
+    didDrawPage: (data) => {
+      if (data.cursor) {
+        const finalY = data.cursor.y;
+        doc.text(`Total Horas Trabajadas: ${totalHoras.value.toFixed(2)}`, 10, finalY + 10);
+        doc.text(`Total Ganancias: ${totalGanancias.value.toFixed(2)}`, 10, finalY + 20);
+      }
     }
   });
+
+  doc.save("reporte_turnos.pdf");
 };
 </script>
 
@@ -101,13 +160,13 @@ const calculateReport = async () => {
           <Label for="startDate" class="text-right">
             Fecha Inicio
           </Label>
-          <Input id="startDate" type="date" v-model="startDate.valueOf" class="col-span-3" />
+          <Input id="startDate" type="date" v-model="startDateInput" class="col-span-3" />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="endDate" class="text-right">
             Fecha Fin
           </Label>
-          <Input id="endDate" type="date" v-model="endDate.valueOf" class="col-span-3" />
+          <Input id="endDate" type="date" v-model="endDateInput" class="col-span-3" />
         </div>
       </div>
       <Button @click="fetchTurnos">Generar Reporte</Button>
