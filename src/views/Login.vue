@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'vue-router';
+import { auth } from '@/utils/firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
 
 const router2 = useRouter();
 
@@ -26,16 +28,35 @@ const { handleSubmit } = useForm({
 });
 
 const onSubmit = handleSubmit((values) => {
-  router2.push('/modelos');
   
+  const email = values.user; 
+  const password = values.password
+
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    router2.push('/modelos');
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log(error);
+  });
+
   
 });
 
 </script>
 
 <template>
+
+  <header class="flex justify-between items-start p-6 ">
+      <RouterLink to="/"><Button>Inicio</Button></RouterLink>
+        
+  </header>
   <section class="form-content grid justify-items-center">
-    
+    <h1 class="font-bold">Login</h1>
     <form class="grid gap-4 w-full md:w-[640px]" @submit="onSubmit">
       <FormField v-slot="{ componentField }" name="user">
         <FormItem>

@@ -14,7 +14,7 @@ import {
   useVueTable,
 } from '@tanstack/vue-table'
 
-import { h, ref } from 'vue'
+import { h, ref, onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -25,32 +25,34 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { modelosPrev, valueUpdater } from '@/lib/utils'
+import { valueUpdater } from '@/lib/utils'
 import { useRouter } from 'vue-router'
 import type { Modelo } from '@/lib/modelo'
+import { collection, getDocs } from 'firebase/firestore'
+import { db } from '@/utils/firebase'
 
 
 const router = useRouter();
 
-const data = modelosPrev;
+const modelos = ref<Modelo[]>([]);
 
 const columns: ColumnDef<Modelo>[] = [
   {
-    accessorKey: 'idModelo',
+    accessorKey: 'id',
     header: 'ID',
-    cell: ({ row }) => h('div', { class: 'capitalize' }, row.getValue('idModelo')),
+    cell: ({ row }) => h('div', { }, row.getValue('id')),
   },
   {
     accessorKey: 'nombre',
-    cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('nombre')),
+    cell: ({ row }) => h('div', {}, row.getValue('nombre')),
   },
   {
     accessorKey: 'username',
-    cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('username')),
+    cell: ({ row }) => h('div', {}, row.getValue('username')),
   },
   {
     accessorKey: 'jornada',
-    cell: ({ row }) => h('div', { class: 'lowercase' }, row.getValue('jornada')),
+    cell: ({ row }) => h('div', {}, row.getValue('jornada')),
   },
 ]
 
@@ -60,7 +62,9 @@ const columnVisibility = ref<VisibilityState>({})
 const rowSelection = ref({})
 
 const table = useVueTable({
-  data,
+  get data() {
+    return modelos.value;
+  },
   columns,
   getCoreRowModel: getCoreRowModel(),
   getPaginationRowModel: getPaginationRowModel(),
@@ -78,11 +82,21 @@ const table = useVueTable({
   },
 });
 
-function clickModelo(message: Modelo) {
-
-  router.push('/modelos/'+message.idModelo);
+async function fetchModelos() {
+  const querySnapshot = await getDocs(collection(db, 'modelos'));
+  modelos.value = querySnapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  } as Modelo));
 }
 
+onMounted(async () => {
+  await fetchModelos();
+});
+
+function clickModelo(modelo: Modelo) {
+  router.push('/modelos/' + modelo.id);
+}
 </script>
 
 <template>

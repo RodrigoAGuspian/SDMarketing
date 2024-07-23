@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
+import { auth } from '@/utils/firebase'
+import { signOut } from 'firebase/auth';
 import { useRouter } from 'vue-router'
 const router = useRouter();
 function logout(){
-    router.push('/');
+    signOut(auth).then(() => {
+        router.push('/');        
+    }).catch((error) => {
+        router.push('/');
+    });
 
 }
 </script>

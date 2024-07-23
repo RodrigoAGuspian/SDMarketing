@@ -1,10 +1,8 @@
 export interface Modelo {
-    idModelo: number
-    nombre: String
-    username: String
-    jornada: String
-    plataformas: [],
-    turnos: [],
-    ganancias: []
-  }
+  id: string;
+  jornada: string;
+  nombre: string;
+  plataformas: string[];
+  username: string;
+}
   

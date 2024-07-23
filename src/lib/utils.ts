@@ -18,48 +18,43 @@ export function valueUpdater<T extends Updater<any>>(updaterOrValue: T, ref: Ref
 
 export const modelosPrev: Modelo[] = [
   {
-    idModelo: 1,
+    id: "1",
     nombre: "Camila",
     username: "Camila1234",
     jornada: "Mañana",
     plataformas: [],
-    turnos: [],
-    ganancias: []
+
   },
   {
-    idModelo: 2,
+    id: "2",
     nombre: "Ana",
     username: "Ana1234",
     jornada: "Tarde",
     plataformas: [],
-    turnos: [],
-    ganancias: []
+
   },
   {
-    idModelo: 3,
+    id: "3",
     nombre: "Camila",
     username: "Camila1234",
     jornada: "Mañana",
     plataformas: [],
-    turnos: [],
-    ganancias: []
+
   },
   {
-    idModelo: 4,
+    id: "4",
     nombre: "Camila",
     username: "Camila1234",
     jornada: "Mañana",
     plataformas: [],
-    turnos: [],
-    ganancias: []
+    
   },
   {
-    idModelo: 5,
+    id: "5",
     nombre: "Camila",
     username: "Camila1234",
     jornada: "Mañana",
     plataformas: [],
-    turnos: [],
-    ganancias: []
+
   },
 ]
