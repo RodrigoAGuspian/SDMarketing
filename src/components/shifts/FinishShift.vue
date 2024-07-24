@@ -27,7 +27,6 @@ import {
 import { collection, query, where, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase';
 import type { Modelo } from '@/lib/modelo';
-import type { Turno } from '@/lib/turno';
 import { useRouter } from 'vue-router';
 
 export default defineComponent({
@@ -87,7 +86,6 @@ export default defineComponent({
       }
     },
     async finalizarTurno() {
-      const router = useRouter();
       try {
         const modelosRef = collection(db, 'modelos');
         const q = query(modelosRef, where('username', '==', this.selectedUsername));
@@ -119,7 +117,7 @@ export default defineComponent({
           ganancias: this.ganancias,
         });
 
-        router.push('/');
+        this.$router.push('/');
 
         console.log('Turno finalizado con ID: ', turnoId);
       } catch (error) {

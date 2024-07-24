@@ -35,7 +35,7 @@ const onSubmit = handleSubmit((values) => {
   signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed in 
-    const user = userCredential.user;
+    //const user = userCredential.user;
     router2.push('/modelos');
   })
   .catch((error) => {
