@@ -28,6 +28,7 @@ import { collection, query, where, getDocs, serverTimestamp, updateDoc } from 'f
 import { db } from '@/utils/firebase';
 import type { Modelo } from '@/lib/modelo';
 import type { Turno } from '@/lib/turno';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'ModelSearch',
@@ -82,10 +83,11 @@ export default defineComponent({
         this.filteredModels = [];
       }
       } catch (error) {
-        
+        console.log("Error", error);
       }
     },
     async finalizarTurno() {
+      const router = useRouter();
       try {
         const modelosRef = collection(db, 'modelos');
         const q = query(modelosRef, where('username', '==', this.selectedUsername));
@@ -117,6 +119,8 @@ export default defineComponent({
           ganancias: this.ganancias,
         });
 
+        router.push('/');
+
         console.log('Turno finalizado con ID: ', turnoId);
       } catch (error) {
         console.error('Error finalizando el turno: ', error);
@@ -136,7 +140,7 @@ export default defineComponent({
       <RouterLink to="/"><Button>Inicio</Button></RouterLink>
         
     </header>
-    <form class="max-w-lg my-6 mx-auto p-6 bg-white shadow-md rounded">
+    <section class="max-w-lg my-6 mx-auto p-6 bg-white shadow-md rounded">
         <h1 class="text-2xl font-bold mb-4">Finalizar Turno</h1>
         <Select v-model="selectedUsername">
             <SelectTrigger>
@@ -167,8 +171,8 @@ export default defineComponent({
         <div class="flex items-center justify-end space-x-2 py-2">
             <div class="space-x-2">
             <RouterLink to="/"><Button>Cancelar</Button></RouterLink>
-            <Button @click="finalizarTurno()">Finalizar</Button>
+            <Button @click="finalizarTurno" >Finalizar</Button>
             </div>
         </div>
-    </form>
+    </section>
 </template>

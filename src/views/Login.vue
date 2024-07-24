@@ -39,8 +39,6 @@ const onSubmit = handleSubmit((values) => {
     router2.push('/modelos');
   })
   .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
     console.log(error);
   });
 
