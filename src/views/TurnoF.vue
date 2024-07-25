@@ -4,6 +4,7 @@ import { collection, getDoc, updateDoc, doc, getDocs, deleteDoc, Timestamp } fro
 import { db } from '@/utils/firebase';
 import HeaderP from '@/components/Header/HeaderP.vue';
 import Button from '@/components/ui/button/Button.vue';
+import Loading from 'vue-loading-overlay';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,6 +16,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { toast } from '@/components/ui/toast';
 
 export default defineComponent({
   components: {
@@ -29,6 +31,7 @@ export default defineComponent({
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
+    Loading
   },
   data() {
     return {
@@ -41,6 +44,7 @@ export default defineComponent({
       id: this.$route.params.id as string,
       plataformasDisponibles: [] as string[],
       isEditing: false,
+      isLoading: false,
     };
   },
   methods: {
@@ -49,6 +53,7 @@ export default defineComponent({
       this.plataformasDisponibles = querySnapshot.docs.map(doc => doc.data().nombre);
     },
     async fetchTurno() {
+      this.isLoading = true;
       const docRef = doc(db, 'turnos', this.id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -62,12 +67,14 @@ export default defineComponent({
       } else {
         console.log('No such document!');
       }
+      this.isLoading = false;
     },
     convertTimestampToDatetimeLocal(timestamp: any) {
       const date = new Date(timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
       return date.toISOString().slice(0, 16);
     },
     async handleSubmit() {
+      this.isLoading = true;
       const docRef = doc(db, 'turnos', this.id);
       await updateDoc(docRef, {
         ...this.form,
@@ -75,15 +82,31 @@ export default defineComponent({
         desde: this.convertDatetimeLocalToTimestamp(this.form.desde),
         hasta: this.convertDatetimeLocalToTimestamp(this.form.hasta),
       });
+
+      toast({
+        title: 'Se ha editado el turno éxito',
+        description: '',
+      });
+
       this.$router.push('/modelos');
+
+      this.isLoading = false;
     },
     convertDatetimeLocalToTimestamp(datetimeLocal: any) {
       return Timestamp.fromDate(new Date(datetimeLocal));
     },
     async handleDelete() {
+      this.isLoading = true;
       const docRef = doc(db, 'turnos', this.id);
       await deleteDoc(docRef);
+      this.isLoading = false;
+      toast({
+        title: 'Se ha eliminado el turno éxito',
+        description: '',
+      });
       this.$router.push('/modelos');
+      
+      
     },
   },
   created() {
@@ -99,6 +122,9 @@ export default defineComponent({
 
 
 <template>
+  <loading v-model:active="isLoading"
+                :can-cancel="false"
+                :is-full-page="true"/>
   <HeaderP />
   <nav class="flex justify-between items-center px-6 py-4 ">
     <RouterLink to="/modelos">

@@ -19,6 +19,7 @@ import { useRoute, useRouter } from 'vue-router';
 import type { Modelo } from '@/lib/modelo';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { toast } from '../ui/toast';
 
 
 
@@ -28,9 +29,10 @@ const turnos = ref<Turno[]>([]);
 const totalHoras = ref(0);
 const totalGanancias = ref(0);
 const turnosConDetalles = ref<{ turno: Turno; horasTrabajadas: number; gananciasTotales: number }[]>([]);
-
+import Loading from 'vue-loading-overlay';
 const route = useRoute();
 const modeloId = route.params.id as string;
+let isLoading = false;
 let modelo = {} as Modelo;
 const fetchTurnos = async () => {
 
@@ -60,7 +62,7 @@ const fetchTurnos = async () => {
 };
 
 const calculateReport = async () => {
-  
+  isLoading = true;
   const docRef = doc(db, 'modelos', modeloId);
   const docSnap = await getDoc(docRef);
   modelo = { id: docSnap.id, ...docSnap.data() } as Modelo;
@@ -95,10 +97,16 @@ const calculateReport = async () => {
   });
 
   generatePDFReport();
-
+  isLoading = false;
+  toast({
+          title: 'Se ha generado el reporte con éxito',
+          description: '',
+        });
 };
 
 const generatePDFReport = () => {
+
+  
   const doc = new jsPDF();
   doc.text("Reporte de Turnos", 10, 10);
 
@@ -136,12 +144,16 @@ const generatePDFReport = () => {
       }
     }
   });
-
+  
   doc.save("reporte_turnos.pdf");
+  
 };
 </script>
 
 <template>
+  <loading v-model:active="isLoading"
+                :can-cancel="false"
+                :is-full-page="true"/>
   <Dialog >
     <DialogTrigger as-child>
       <Button variant="outline">

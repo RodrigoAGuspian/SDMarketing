@@ -6,11 +6,13 @@ import { collection, addDoc, getDoc, updateDoc, doc, getDocs } from 'firebase/fi
 import HeaderP from '@/components/Header/HeaderP.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { db } from '@/utils/firebase';
-
+import { toast } from '@/components/ui/toast';
+import Loading from 'vue-loading-overlay';
 export default defineComponent({
   components: {
     HeaderP,
-    Button
+    Button,
+    Loading
   },
   data() {
     return {
@@ -24,12 +26,15 @@ export default defineComponent({
       selectedPlataforma: '',
       plataformasDisponibles: [] as string[],
       isEditing: false,
+      isLoading: false,
     };
   },
   methods: {
     async fetchPlataformas() {
+      this.isLoading = true;
       const querySnapshot = await getDocs(collection(db, 'plataformas'));
       this.plataformasDisponibles = querySnapshot.docs.map(doc => doc.data().nombre);
+      this.isLoading = false;
     },
     addPlataforma() {
       if (this.selectedPlataforma && !this.form.plataformas.includes(this.selectedPlataforma)) {
@@ -41,24 +46,35 @@ export default defineComponent({
       this.form.plataformas.splice(index, 1);
     },
     async handleSubmit() {
-      
+      this.isLoading = true;
       if (this.isEditing) {
         const docRef = doc(db, 'modelos', this.id);
         await updateDoc(docRef, this.form);
+        toast({
+          title: 'Se ha editado con éxito',
+          description: '',
+        });
       } else {
         await addDoc(collection(db, 'modelos'), this.form);
+        toast({
+          title: 'Se ha guardado con éxito',
+          description: '',
+        });
       }
+      this.isLoading = false;
       this.$router.push('/modelos');
     },
     async fetchModelo() {
-
+      this.isLoading = true;
       const docRef = doc(db, 'modelos', this.id);
       const docSnap = await getDoc(docRef);
+      this.isLoading = false;
       if (docSnap.exists()) {
         this.form = docSnap.data() as typeof this.form;
       } else {
         console.log('No such document!');
       }
+      this.isLoading = false;
     },
   },
   created() {
@@ -72,6 +88,9 @@ export default defineComponent({
 </script>
 
 <template>
+  <loading v-model:active="isLoading"
+                 :can-cancel="false"
+                 :is-full-page="true"/>
   <HeaderP />
   <nav class="flex justify-between items-center px-6">
     <RouterLink to="/modelos"><Button>Lista de Modelos</Button></RouterLink>

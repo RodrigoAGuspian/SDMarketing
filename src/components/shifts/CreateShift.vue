@@ -27,8 +27,8 @@ import { ref } from 'vue';
 import { collection, query, where, getDocs, addDoc, Timestamp, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/utils/firebase'
 import type { Modelo } from '@/lib/modelo'
-import type { Turno } from '@/lib/turno'
-
+import { toast } from '../ui/toast'
+import Loading from 'vue-loading-overlay';
 
 
 
@@ -54,6 +54,8 @@ export default {
     SelectValue,
     Input,
     Search,
+    Loading
+    
   },
 
   
@@ -61,7 +63,8 @@ export default {
     const searchQuery = ref('');
     const modelos = ref<Modelo[]>([]);
     const filteredModels = ref<Modelo[]>([]);
-    let modeloS: Modelo = {} as Modelo;
+    let isLoading = false;
+
     const selectedUsername = ref('')
 
 
@@ -78,6 +81,7 @@ export default {
 
 
     const iniciarTurno = async () =>{
+      isLoading = true;
       const modelosRef = collection(db, "modelos");
       const q = query(modelosRef, where("username", "==", selectedUsername.value));
       const querySnapshot = await getDocs(q);
@@ -107,6 +111,12 @@ export default {
       };
 
       await addDoc(turnosRef, nuevoTurno);
+      
+      toast({
+        title: 'Se ha iniciado el turno con éxito',
+        description: '',
+      });
+      isLoading = false;
 
     }
 
@@ -115,7 +125,8 @@ export default {
       filteredModels,
       searchModels,
       iniciarTurno,
-      selectedUsername
+      selectedUsername,
+      isLoading
     };
   }
 };
@@ -123,6 +134,9 @@ export default {
 </script>
 
 <template>
+<loading v-model:active="isLoading"
+                 :can-cancel="false"
+                 :is-full-page="true"/>
 <AlertDialog>
     <AlertDialogTrigger as-child>
       <Button variant="outline">

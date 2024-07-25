@@ -14,9 +14,11 @@ import { Input } from '@/components/ui/input'
 import { useRouter } from 'vue-router';
 import { auth } from '@/utils/firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
+import Loading from 'vue-loading-overlay';
+import { toast } from '@/components/ui/toast'
 
 const router2 = useRouter();
-
+let isLoading = false;
 
 const formSchema = toTypedSchema(z.object({
   user: z.string().min(2).max(100),
@@ -28,7 +30,7 @@ const { handleSubmit } = useForm({
 });
 
 const onSubmit = handleSubmit((values) => {
-  
+  isLoading = true;  
   const email = values.user; 
   const password = values.password
 
@@ -36,10 +38,22 @@ const onSubmit = handleSubmit((values) => {
   .then((userCredential) => {
     // Signed in 
     //const user = userCredential.user;
+    isLoading = false;
+    toast({
+        title: 'Se ha iniciado sesión con éxito',
+        description: '',
+      });
     router2.push('/modelos');
+    
+    
   })
   .catch((error) => {
     console.log(error);
+    toast({
+        title: 'Error',
+        description: 'No se ha podido iniciar sesión',
+      });
+    isLoading = false;
   });
 
   
@@ -48,6 +62,9 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
+  <loading v-model:active="isLoading"
+                 :can-cancel="false"
+                 :is-full-page="true"/>
 
   <header class="flex justify-between items-start p-6 ">
       <RouterLink to="/"><Button>Inicio</Button></RouterLink>

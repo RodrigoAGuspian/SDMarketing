@@ -27,7 +27,8 @@ import {
 import { collection, query, where, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase';
 import type { Modelo } from '@/lib/modelo';
-import { useRouter } from 'vue-router';
+import Loading from 'vue-loading-overlay';
+import { toast } from '../ui/toast';
 
 export default defineComponent({
   name: 'ModelSearch',
@@ -51,6 +52,7 @@ export default defineComponent({
     SelectValue,
     Input,
     Search,
+    Loading
   },
   data() {
     return {
@@ -60,6 +62,7 @@ export default defineComponent({
       selectedUsername: '',
       plataformasDisponibles: [] as string[],
       ganancias: {} as { [key: string]: number },
+      isLoading: false,
     };
   },
   methods: {
@@ -86,6 +89,7 @@ export default defineComponent({
       }
     },
     async finalizarTurno() {
+      this.isLoading = true;
       try {
         const modelosRef = collection(db, 'modelos');
         const q = query(modelosRef, where('username', '==', this.selectedUsername));
@@ -120,20 +124,38 @@ export default defineComponent({
         this.$router.push('/');
 
         console.log('Turno finalizado con ID: ', turnoId);
+        this.isLoading = false;
+        toast({
+          title: 'Se ha finalizado el turno con éxito',
+          description: '',
+        });
+        
+
       } catch (error) {
-        console.error('Error finalizando el turno: ', error);
+
+        this.isLoading = false;
+        toast({
+          title: 'Error',
+          description: 'No se ha podido finalizar el turno',
+        });
       }
     },
   },
   async created() {
+    this.isLoading = true;
     await this.fetchPlataformas();
     await this.searchModels()
+    this.isLoading = false;
   },
 });
 </script>
 
 
 <template>
+  <loading v-model:active="isLoading"
+                  :can-cancel="false"
+                  :is-full-page="true"/>
+
     <header class="flex justify-between items-start p-6">
       <RouterLink to="/"><Button>Inicio</Button></RouterLink>
         
