@@ -26,10 +26,6 @@ import 'vue-toast-notification/dist/theme-sugar.css';
 
 const $toast = useToast();
 
-
-
-
-
 export default {
 
   components: {
@@ -58,10 +54,7 @@ export default {
       modelo: {} as Modelo,
     };
   },
-  created() {
-    // Lógica para obtener los turnos
-    this.fetchTurnos();
-  },
+  
   methods: {
     async fetchTurnos() {
       const modeloId = this.$route.params.id as string;
@@ -80,7 +73,6 @@ export default {
       );
       const querySnapshot = await getDocs(q);
       this.turnos = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Turno));
-      console.log("Estoy aqui", this.turnos);
       await this.calculateReport();
     },
     async calculateReport() {
@@ -171,9 +163,6 @@ export default {
 </script>
 
 <template>
-  <Toaster />
-
-  
   <Dialog >
     <loading-overlay :show="isLoading" />
     <DialogTrigger as-child>

@@ -219,7 +219,4 @@ function getDateHasta(hastaDate: string)  {
     
   </section>
 
-
-
-  
 </template>

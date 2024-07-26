@@ -31,6 +31,7 @@ import type { Modelo } from '@/lib/modelo'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '@/utils/firebase'
 import LoadingOverlay from '../Loading/LoadingOverlay.vue'
+import ReporteAll from './ReporteAll.vue'
 
 const router = useRouter();
 const isLoading = ref(false);
@@ -105,6 +106,7 @@ function clickModelo(modelo: Modelo) {
 
 <template>
   <loading-overlay :show="isLoading" />
+  <ReporteAll />
   <div class="w-full">
     <div class="flex gap-2 items-center py-4">
       <Input
@@ -169,4 +171,5 @@ function clickModelo(modelo: Modelo) {
       </div>
     </div>
   </div>
+  
 </template>
