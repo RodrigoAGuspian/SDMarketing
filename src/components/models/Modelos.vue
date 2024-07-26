@@ -30,10 +30,10 @@ import { useRouter } from 'vue-router'
 import type { Modelo } from '@/lib/modelo'
 import { collection, getDocs } from 'firebase/firestore'
 import { db } from '@/utils/firebase'
-import Loading from 'vue-loading-overlay';
+import LoadingOverlay from '../Loading/LoadingOverlay.vue'
 
 const router = useRouter();
-let isLoading = false;
+const isLoading = ref(false);
 const modelos = ref<Modelo[]>([]);
 
 const columns: ColumnDef<Modelo>[] = [
@@ -83,17 +83,19 @@ const table = useVueTable({
 });
 
 async function fetchModelos() {
+  isLoading.value = true;
   const querySnapshot = await getDocs(collection(db, 'modelos'));
   modelos.value = querySnapshot.docs.map(doc => ({
     id: doc.id,
     ...doc.data()
   } as Modelo));
+  isLoading.value = false;
 }
 
 onMounted(async () => {
-  isLoading = true;
+  
   await fetchModelos();
-  isLoading = false;
+  
 });
 
 function clickModelo(modelo: Modelo) {
@@ -102,9 +104,7 @@ function clickModelo(modelo: Modelo) {
 </script>
 
 <template>
-  <loading v-model:active="isLoading"
-                :can-cancel="false"
-                :is-full-page="true"/>
+  <loading-overlay :show="isLoading" />
   <div class="w-full">
     <div class="flex gap-2 items-center py-4">
       <Input

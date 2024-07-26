@@ -1,4 +1,5 @@
-<script lang='ts'>
+<script lang="ts">
+import { defineComponent, ref } from 'vue';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -9,10 +10,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import { Search } from 'lucide-vue-next'
-import { Input } from '@/components/ui/input'
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Search } from 'lucide-vue-next';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -21,18 +22,18 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-
-import { ref } from 'vue';
+} from '@/components/ui/select';
 import { collection, query, where, getDocs, addDoc, Timestamp, serverTimestamp } from 'firebase/firestore';
-import { db } from '@/utils/firebase'
-import type { Modelo } from '@/lib/modelo'
-import { toast } from '../ui/toast'
-import Loading from 'vue-loading-overlay';
+import { db } from '@/utils/firebase';
+import type { Modelo } from '@/lib/modelo';
+import LoadingOverlay from '../Loading/LoadingOverlay.vue';
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+const $toast = useToast();
 
 
-
-export default {
+export default defineComponent({
   name: 'ModelSearch',
   components: {
     Button,
@@ -54,36 +55,35 @@ export default {
     SelectValue,
     Input,
     Search,
-    Loading
-    
+    LoadingOverlay,
   },
-
-  
-  setup() {
-    const searchQuery = ref('');
-    const modelos = ref<Modelo[]>([]);
-    const filteredModels = ref<Modelo[]>([]);
-    let isLoading = false;
-
-    const selectedUsername = ref('')
-
-
-    const searchModels = async () => {
-      if (searchQuery.value.length != 0){
-        const q = query(collection(db, 'modelos'), where('username', '>=', searchQuery.value), where('username', '<=', searchQuery.value + '\uf8ff'));
-        const querySnapshot = await getDocs(q);
-        modelos.value = querySnapshot.docs.map(doc => doc.data() as Modelo);
-        filteredModels.value = modelos.value;
-      } else{
-        filteredModels.value = [];  
-      }
+  data() {
+    return {
+      searchQuery: ref(''),
+      filteredModels: ref<Modelo[]>([]),
+      isLoading: false,
+      selectedUsername: ref(''),
     };
-
-
-    const iniciarTurno = async () =>{
-      isLoading = true;
-      const modelosRef = collection(db, "modelos");
-      const q = query(modelosRef, where("username", "==", selectedUsername.value));
+  },
+  methods: {
+    async searchModels() {
+      if (this.searchQuery.length !== 0) {
+        const q = query(
+          collection(db, 'modelos'),
+          where('username', '>=', this.searchQuery),
+          where('username', '<=', this.searchQuery + '\uf8ff')
+        );
+        const querySnapshot = await getDocs(q);
+        this.filteredModels = querySnapshot.docs.map((doc) => doc.data() as Modelo);
+      } else {
+        this.filteredModels = [];
+      }
+    },
+    async iniciarTurno() {
+      
+      this.isLoading = true;
+      const modelosRef = collection(db, 'modelos');
+      const q = query(modelosRef, where('username', '==', this.selectedUsername));
       const querySnapshot = await getDocs(q);
 
       if (querySnapshot.empty) {
@@ -94,49 +94,40 @@ export default {
       const modeloId = modeloDoc.id;
 
       // Verificar si ya existe un turno no finalizado para este modelo
-      const turnosRef = collection(db, "turnos");
-      const turnosQuery = query(turnosRef, where("modelo", "==", modeloId), where("finalizado", "==", false));
+      const turnosRef = collection(db, 'turnos');
+      const turnosQuery = query(
+        turnosRef,
+        where('modelo', '==', modeloId),
+        where('finalizado', '==', false)
+      );
       const turnosSnapshot = await getDocs(turnosQuery);
 
       if (!turnosSnapshot.empty) {
+        $toast.error('Ya hay un turno para ese username.');
+        this.isLoading = false;
         return;
       }
 
-      const nuevoTurno  = {
+      const nuevoTurno = {
         finalizado: false,
-        desde:  serverTimestamp(),
+        desde: serverTimestamp(),
         hasta: Timestamp.fromDate(new Date(0)),
         ganancias: {},
         modelo: modeloId,
       };
 
       await addDoc(turnosRef, nuevoTurno);
-      
-      toast({
-        title: 'Se ha iniciado el turno con éxito',
-        description: '',
-      });
-      isLoading = false;
 
-    }
-
-    return {
-      searchQuery,
-      filteredModels,
-      searchModels,
-      iniciarTurno,
-      selectedUsername,
-      isLoading
-    };
-  }
-};
-
+      $toast.success('Se ha iniciado el turno con éxito.');
+      this.isLoading = false;
+    },
+  },
+});
 </script>
 
 <template>
-<loading v-model:active="isLoading"
-                 :can-cancel="false"
-                 :is-full-page="true"/>
+<Toaster />
+<loading-overlay :show="isLoading" />
 <AlertDialog>
     <AlertDialogTrigger as-child>
       <Button variant="outline">

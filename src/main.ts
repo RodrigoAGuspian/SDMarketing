@@ -3,7 +3,8 @@ import './assets/index.css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import { router } from './router'
-import { LoadingPlugin } from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/css/index.css';
+import 'vue-toast-notification/dist/theme-bootstrap.css';
+import ToastPlugin from 'vue-toast-notification';
 
-createApp(App).use(router).use(LoadingPlugin).mount('#app')
+
+createApp(App).use(router).use(ToastPlugin).mount('#app');

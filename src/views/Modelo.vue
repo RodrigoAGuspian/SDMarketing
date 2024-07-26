@@ -10,8 +10,10 @@ import {
 } from '@/components/ui/card';
 import type { Modelo } from '@/lib/modelo';
 import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import Loading from 'vue-loading-overlay';
+import LoadingOverlay from '@/components/Loading/LoadingOverlay.vue';
 import { db } from '@/utils/firebase';
+
+
 import { h, onMounted, ref } from 'vue';
 import {
   Table,
@@ -40,11 +42,11 @@ const id = route.params.id as string;
 
 const modelo = ref<Modelo>();
 const turnos = ref<Turno[]>([]);
-let isLoading = false;
+const isLoading = ref(false);
 
 
 async function fetchModelo() {
-  isLoading = true;  
+
   const docRef = doc(db, 'modelos', id);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
@@ -52,15 +54,12 @@ async function fetchModelo() {
   } else {
     console.log('No such document!');
   }
-  isLoading = false;  
 }
 
 async function fetchTurnos() {
-  isLoading = true;  
   const q = query(collection(db, 'turnos'), where('modelo', '==', id));
   const querySnapshot = await getDocs(q);
   turnos.value = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Turno));
-  isLoading = false;  
 }
 
 function getGanancias(ganancias: any){
@@ -75,10 +74,10 @@ function getGanancias(ganancias: any){
 }
 
 onMounted(async () => {
-  isLoading = true;  
+  isLoading.value = true;  
   await fetchModelo();
   await fetchTurnos();
-  isLoading = false;  
+  isLoading.value = false;  
 });
 
 function goEdit(id: any) {
@@ -144,9 +143,7 @@ function getDateHasta(hastaDate: string)  {
 
 <template>
 
-  <loading v-model:active="isLoading"
-                 :can-cancel="false"
-                 :is-full-page="true"/>
+  <loading-overlay :show="isLoading" />
 
   <HeaderP />
   <nav class="flex justify-between items-center px-6">

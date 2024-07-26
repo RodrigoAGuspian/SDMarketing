@@ -14,11 +14,16 @@ import { Input } from '@/components/ui/input'
 import { useRouter } from 'vue-router';
 import { auth } from '@/utils/firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import Loading from 'vue-loading-overlay';
-import { toast } from '@/components/ui/toast'
+
+import LoadingOverlay from '@/components/Loading/LoadingOverlay.vue';
+import { ref } from 'vue'
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+const $toast = useToast();
 
 const router2 = useRouter();
-let isLoading = false;
+const isLoading = ref(false);
 
 const formSchema = toTypedSchema(z.object({
   user: z.string().min(2).max(100),
@@ -30,7 +35,7 @@ const { handleSubmit } = useForm({
 });
 
 const onSubmit = handleSubmit((values) => {
-  isLoading = true;  
+  isLoading.value = true;  
   const email = values.user; 
   const password = values.password
 
@@ -38,22 +43,16 @@ const onSubmit = handleSubmit((values) => {
   .then((userCredential) => {
     // Signed in 
     //const user = userCredential.user;
-    isLoading = false;
-    toast({
-        title: 'Se ha iniciado sesión con éxito',
-        description: '',
-      });
+    isLoading.value = false;
     router2.push('/modelos');
+    $toast.success('Se ha iniciado sesión correctamente.');
     
     
   })
   .catch((error) => {
     console.log(error);
-    toast({
-        title: 'Error',
-        description: 'No se ha podido iniciar sesión',
-      });
-    isLoading = false;
+    isLoading.value = false;
+    $toast.error('No se ha podido iniciar sesión.');
   });
 
   
@@ -62,9 +61,14 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <template>
-  <loading v-model:active="isLoading"
-                 :can-cancel="false"
-                 :is-full-page="true"/>
+  <Toaster />
+  <loading-overlay :show="isLoading" />
+
+  <div class="vl-parent">
+    <loading v-model:active="isLoading"
+                :can-cancel="false"
+                :is-full-page="true"/>
+  </div>
 
   <header class="flex justify-between items-start p-6 ">
       <RouterLink to="/"><Button>Inicio</Button></RouterLink>

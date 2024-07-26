@@ -1,18 +1,20 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { collection, addDoc, getDoc, updateDoc, doc, getDocs } from 'firebase/firestore';
-
-
 import HeaderP from '@/components/Header/HeaderP.vue';
 import Button from '@/components/ui/button/Button.vue';
 import { db } from '@/utils/firebase';
-import { toast } from '@/components/ui/toast';
-import Loading from 'vue-loading-overlay';
+import LoadingOverlay from '@/components/Loading/LoadingOverlay.vue';
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+const $toast = useToast();
+
 export default defineComponent({
   components: {
     HeaderP,
     Button,
-    Loading
+    LoadingOverlay
   },
   data() {
     return {
@@ -50,16 +52,10 @@ export default defineComponent({
       if (this.isEditing) {
         const docRef = doc(db, 'modelos', this.id);
         await updateDoc(docRef, this.form);
-        toast({
-          title: 'Se ha editado con éxito',
-          description: '',
-        });
+        $toast.success('Se ha editado con éxito');
       } else {
         await addDoc(collection(db, 'modelos'), this.form);
-        toast({
-          title: 'Se ha guardado con éxito',
-          description: '',
-        });
+        $toast.success('Se ha guardado con éxito');
       }
       this.isLoading = false;
       this.$router.push('/modelos');
@@ -74,7 +70,6 @@ export default defineComponent({
       } else {
         console.log('No such document!');
       }
-      this.isLoading = false;
     },
   },
   created() {
@@ -88,9 +83,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <loading v-model:active="isLoading"
-                 :can-cancel="false"
-                 :is-full-page="true"/>
+  <loading-overlay :show="isLoading" />
   <HeaderP />
   <nav class="flex justify-between items-center px-6">
     <RouterLink to="/modelos"><Button>Lista de Modelos</Button></RouterLink>

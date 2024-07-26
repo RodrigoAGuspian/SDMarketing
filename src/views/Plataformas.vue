@@ -16,8 +16,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { toast } from '@/components/ui/toast';
-import Loading from 'vue-loading-overlay';
+import LoadingOverlay from '@/components/Loading/LoadingOverlay.vue';
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+const $toast = useToast();
+
 interface Plataforma {
   id: string;
   nombre: string;
@@ -40,7 +44,7 @@ export default defineComponent({
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-    Loading
+    LoadingOverlay,
   },
     
   setup() {
@@ -48,26 +52,23 @@ export default defineComponent({
     const newPlataforma = ref('');
     const editingPlataforma = ref<Plataforma | null>(null);
     const plataformaToDelete = ref<Plataforma | null>(null);
-    let isLoading = false;
+    const isLoading = ref(false);
 
     const loadPlataformas = async () => {
-      isLoading = true;
+      isLoading.value = true;
       plataformas.value = await fetchPlataformas();
-      isLoading = false;
+      isLoading.value = false;
     };
 
     const addPlataforma = async () => {
       
       if (newPlataforma.value.trim()) {
-        isLoading = true;
+        isLoading.value = true;
         await createPlataforma(newPlataforma.value.trim());
         newPlataforma.value = '';
         loadPlataformas();
-        isLoading = false;
-        toast({
-          title: 'Se ha guardado la plataforma con éxito',
-          description: '',
-        });
+        isLoading.value = false;
+        $toast.success('Se ha guardado la plataforma.');
         
       } else {
         alert('El nombre de la plataforma no puede estar vacío.');
@@ -81,11 +82,11 @@ export default defineComponent({
 
     const savePlataforma = async () => {
       if (editingPlataforma.value?.nombre.trim()) {
-        isLoading = true;
+        isLoading.value = true;
         await updatePlataforma(editingPlataforma.value?.id, editingPlataforma.value?.nombre.trim());
         editingPlataforma.value = null;
         loadPlataformas();
-        isLoading = false;
+        isLoading.value = false;
         
       } else {
         alert('El nombre de la plataforma no puede estar vacío.');
@@ -98,15 +99,12 @@ export default defineComponent({
 
     const removePlataforma = async () => {
       if (plataformaToDelete.value) {
-        isLoading = true;
+        isLoading.value = true;
         await deletePlataforma(plataformaToDelete.value.id);
         plataformaToDelete.value = null;
         loadPlataformas();
-        isLoading = false;
-        toast({
-          title: 'Se ha eliminado la plataforma con éxito',
-          description: '',
-        });
+        isLoading.value = false;
+        $toast.success('Se ha eliminado la plataforma.');
       }
     };
 
@@ -129,9 +127,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <loading v-model:active="isLoading"
-                 :can-cancel="false"
-                 :is-full-page="true"/>
+  <loading-overlay :show="isLoading" />
     <HeaderP />
     <nav class="flex justify-between items-center px-6">
       <RouterLink to="/modelos"><Button>Lista de Modelos</Button></RouterLink>

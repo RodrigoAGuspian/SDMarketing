@@ -4,7 +4,8 @@ import { collection, getDoc, updateDoc, doc, getDocs, deleteDoc, Timestamp } fro
 import { db } from '@/utils/firebase';
 import HeaderP from '@/components/Header/HeaderP.vue';
 import Button from '@/components/ui/button/Button.vue';
-import Loading from 'vue-loading-overlay';
+import LoadingOverlay from '@/components/Loading/LoadingOverlay.vue';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +17,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { toast } from '@/components/ui/toast';
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+
+const $toast = useToast();
 
 export default defineComponent({
   components: {
@@ -31,7 +36,7 @@ export default defineComponent({
     AlertDialogHeader,
     AlertDialogTitle,
     AlertDialogTrigger,
-    Loading
+    LoadingOverlay
   },
   data() {
     return {
@@ -53,7 +58,6 @@ export default defineComponent({
       this.plataformasDisponibles = querySnapshot.docs.map(doc => doc.data().nombre);
     },
     async fetchTurno() {
-      this.isLoading = true;
       const docRef = doc(db, 'turnos', this.id);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
@@ -83,10 +87,7 @@ export default defineComponent({
         hasta: this.convertDatetimeLocalToTimestamp(this.form.hasta),
       });
 
-      toast({
-        title: 'Se ha editado el turno éxito',
-        description: '',
-      });
+      $toast.success('Se ha guardado el turno.');
 
       this.$router.push('/modelos');
 
@@ -100,21 +101,20 @@ export default defineComponent({
       const docRef = doc(db, 'turnos', this.id);
       await deleteDoc(docRef);
       this.isLoading = false;
-      toast({
-        title: 'Se ha eliminado el turno éxito',
-        description: '',
-      });
+      $toast.success('Se ha eliminado el turno.');
       this.$router.push('/modelos');
       
       
     },
   },
   created() {
+    this.isLoading = true;
     if (this.$route.params.id) {
       this.isEditing = true;
       this.fetchTurno();
     }
     this.fetchPlataformas();
+    this.isLoading = false;
   },
 });
 </script>
@@ -122,9 +122,7 @@ export default defineComponent({
 
 
 <template>
-  <loading v-model:active="isLoading"
-                :can-cancel="false"
-                :is-full-page="true"/>
+  <loading-overlay :show="isLoading" />
   <HeaderP />
   <nav class="flex justify-between items-center px-6 py-4 ">
     <RouterLink to="/modelos">

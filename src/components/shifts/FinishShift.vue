@@ -27,8 +27,13 @@ import {
 import { collection, query, where, getDocs, serverTimestamp, updateDoc } from 'firebase/firestore';
 import { db } from '@/utils/firebase';
 import type { Modelo } from '@/lib/modelo';
-import Loading from 'vue-loading-overlay';
-import { toast } from '../ui/toast';
+
+import LoadingOverlay from '../Loading/LoadingOverlay.vue';
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+
+const $toast = useToast();
+
 
 export default defineComponent({
   name: 'ModelSearch',
@@ -52,7 +57,7 @@ export default defineComponent({
     SelectValue,
     Input,
     Search,
-    Loading
+    LoadingOverlay,
   },
   data() {
     return {
@@ -120,24 +125,14 @@ export default defineComponent({
           hasta: serverTimestamp(),
           ganancias: this.ganancias,
         });
-
-        this.$router.push('/');
-
-        console.log('Turno finalizado con ID: ', turnoId);
+        $toast.success('Se ha finalizado el turno con éxito.');
         this.isLoading = false;
-        toast({
-          title: 'Se ha finalizado el turno con éxito',
-          description: '',
-        });
+        this.$router.push('/');
         
 
       } catch (error) {
-
+        $toast.error('No se pudo finalizar el turno.');
         this.isLoading = false;
-        toast({
-          title: 'Error',
-          description: 'No se ha podido finalizar el turno',
-        });
       }
     },
   },
@@ -152,9 +147,7 @@ export default defineComponent({
 
 
 <template>
-  <loading v-model:active="isLoading"
-                  :can-cancel="false"
-                  :is-full-page="true"/>
+  <loading-overlay :show="isLoading" />
 
     <header class="flex justify-between items-start p-6">
       <RouterLink to="/"><Button>Inicio</Button></RouterLink>
