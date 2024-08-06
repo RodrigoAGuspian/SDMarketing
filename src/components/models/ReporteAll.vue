@@ -188,34 +188,75 @@ export default {
 
     <Dialog >
         <loading-overlay :show="isLoading" />
-        <DialogTrigger as-child>
-        <Button variant="outline">
+        <DialogTrigger  as-child>
+        <Button class = "button" variant="outline">
             Generar Reporte
         </Button>
         </DialogTrigger>
-        <DialogContent class="sm:max-w-[425px]">
-        <DialogHeader>
-            <DialogTitle>Reporte de Turnos</DialogTitle>
-            <DialogDescription>
+        <DialogContent class="font-bold2 sm:max-w-[425px]">
+        <DialogHeader class="font-bold2">
+            <DialogTitle class= "font-bold2">Reporte de Turnos</DialogTitle>
+            <DialogDescription class= "font-bold2" >
             Selecciona el rango de fechas y el modelo para ver el reporte de turnos.
             </DialogDescription>
         </DialogHeader>
-        <div class="grid gap-4 py-4">
-            <div class="grid grid-cols-4 items-center gap-4">
+        <div class="font-bold2 grid gap-4 py-4">
+            <div class="font-bold2 grid grid-cols-4 items-center gap-4">
             <Label for="startDate" class="text-right">
                 Fecha Inicio
             </Label>
-            <Input id="startDate" type="date" v-model="startDateInput" class="col-span-3" />
+            <Input id="startDate" type="date" v-model="startDateInput" class="font-bold3 col-span-3" />
             </div>
             <div class="grid grid-cols-4 items-center gap-4">
-            <Label for="endDate" class="text-right">
+            <Label for="endDate" class="font-bold2 text-right">
                 Fecha Fin
             </Label>
-            <Input id="endDate" type="date" v-model="endDateInput" class="col-span-3" />
+            <Input id="endDate" type="date" v-model="endDateInput" class="font-bold3 col-span-3" />
             </div>
         </div>
-        <Button @click="fetchTurnos">Generar Reporte</Button>
+        <Button class="button" @click="fetchTurnos">Generar Reporte</Button>
         </DialogContent>
     </Dialog>
 
 </template>
+
+<style scoped>
+.button{
+    align-items:  center;
+    margin: 5px;
+    font-size: 1.2rem;
+    background-color: #f9db5c;
+    border: solid #a87b05 1px;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    font-size: 1.1rem;
+    border-radius: 5px;
+}
+.button:hover{
+    background-color: #f9db5c;
+    border: solid 373739 1px;
+    color:#373739;
+    font-size: 1.1rem;
+    transform: translateY(-5%);
+  }
+  .font-bold{
+    color:#f9db5c ;
+    font-family: 'Karla', sans-serif ;
+    font-size: 1.1rem;
+  }
+  .font-bold2{
+    background-color: #2f2f2f;
+    border: none;
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #373739;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+</style>

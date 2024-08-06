@@ -14,7 +14,23 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <AlertDialogAction v-bind="delegatedProps" :class="cn(buttonVariants(), props.class)">
+  <AlertDialogAction v-bind="delegatedProps" :class="cn(buttonVariants(), 'font-bold3 mt-2 sm:mt-0', props.class)">
     <slot />
   </AlertDialogAction>
 </template>
+
+<style scoped>
+
+  .font-bold3{
+    align-items:  center;
+    padding: 3px 10px 3px 10px;
+    font-size: 1.1rem;
+    background-color: #f9db5c ;
+    font-family: 'Karla', sans-serif;
+    border: solid #a87b05 1px ;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    border-radius: 5px;
+  }
+</style>

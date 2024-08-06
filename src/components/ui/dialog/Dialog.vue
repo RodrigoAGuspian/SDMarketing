@@ -8,7 +8,17 @@ const forwarded = useForwardPropsEmits(props, emits)
 </script>
 
 <template>
-  <DialogRoot v-bind="forwarded">
+  <DialogRoot class="font-bold3"v-bind="forwarded">
     <slot />
   </DialogRoot>
 </template>
+
+<style scoped>
+.font-bold3{
+  color:#f9db5c;
+  background-color: #373739;
+  border:solid #a87b05 1px;
+  font-family: 'Karla', sans-serif;
+  font-size: 1rem;
+}
+</style>

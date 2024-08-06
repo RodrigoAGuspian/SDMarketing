@@ -14,7 +14,17 @@ const delegatedProps = computed(() => {
 </script>
 
 <template>
-  <AlertDialogCancel v-bind="delegatedProps" :class="cn(buttonVariants({ variant: 'outline' }), 'mt-2 sm:mt-0', props.class)">
+  <AlertDialogCancel v-bind="delegatedProps" :class="cn(buttonVariants({ variant: 'outline' }), 'font-bold3 mt-2 sm:mt-0', props.class)">
     <slot />
   </AlertDialogCancel>
 </template>
+
+<style scoped>
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #373739;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+</style>

@@ -70,8 +70,8 @@ const onSubmit = handleSubmit((values) => {
                 :is-full-page="true"/>
   </div>
 
-  <header class="flex justify-between items-start p-6 ">
-      <RouterLink to="/"><Button>Inicio</Button></RouterLink>
+  <header class="header">
+      <RouterLink to="/"><Button class = "inicio" >Inicio</Button></RouterLink>
         
   </header>
   <section class="form-content grid justify-items-center">
@@ -79,21 +79,21 @@ const onSubmit = handleSubmit((values) => {
     <form class="grid gap-4 w-full md:w-[640px]" @submit="onSubmit">
       <FormField v-slot="{ componentField }" name="user">
         <FormItem>
-          <FormLabel>Usuario</FormLabel>
+          <FormLabel class="font-bold2">Usuario</FormLabel>
           <FormControl>
-            <Input type="text" v-bind="componentField" />
+            <Input class="font-bold3" type="text" v-bind="componentField" />
           </FormControl>
         </FormItem>
       </FormField>
       <FormField v-slot="{ componentField }" name="password">
         <FormItem>
-          <FormLabel>Contraseña</FormLabel>
+          <FormLabel class="font-bold2">Contraseña</FormLabel>
           <FormControl>
-            <Input type="password" v-bind="componentField" />
+            <Input class="font-bold3" type="password" v-bind="componentField" />
           </FormControl>
         </FormItem>
       </FormField>
-      <Button type="submit">
+      <Button class = "sesion" type="submit">
         Iniciar Sesión
       </Button>
     </form>
@@ -101,9 +101,230 @@ const onSubmit = handleSubmit((values) => {
 </template>
 
 <style scoped>
+@media (max-width: 412px){
   .form-content{
     display: grid !important;
 		align-content: center !important;
-    padding: 20px;
+    padding: 0px 20px 250px 30px;
+    background-color: #19191a;
+    width: 100%;
+    height: 100vh;
   }
+  .header{
+    background-color: #19191a;
+    padding: 10% 65% 10% 10%;
+    align-items: flex-start;
+  }
+
+  .inicio{
+    display: flex;
+    align-items:  center;
+    font-size: 1.2rem;
+    padding: 10% 35% 10% 35%;
+    background-color: #19191a;
+    border: solid #a87b05 2px;
+    outline: 0;
+    cursor: pointer;
+    color: #f9db5c;
+    border-radius: 5px;
+  }
+  .inicio:hover{
+    padding:10% 35% 10% 35%;
+    background-color: #19191a;
+    border: solid 373739 1px;
+    color:#f9db5c;
+    box-shadow: 3px 3px 5px #a87b05;
+    transform: translateY(-3%);
+  }
+  .sesion{
+    display: flex;
+    align-items:  center;
+    margin: 5px;
+    font-size: 1.2rem;
+    padding: 5%;
+    background-color: #f9db5c;
+    border: solid #a87b05 1px;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    font-size: 1.1rem;
+    border-radius: 25px;
+  }
+  .sesion:hover{
+    padding:5%;
+    background-color: #f9db5c;
+    border: solid 373739 1px;
+    color:#373739;
+    font-size: 1.1rem;
+    transform: translateY(-5%);
+  }
+  .font-bold{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1.15rem;
+  }
+  .font-bold2{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #19191a;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+}
+@media (min-width: 412px) and (max-width: 1100px){
+  .form-content{
+    display: grid !important;
+		align-content: center !important;
+    padding: 0px 20px 500px 30px;
+    background-color: #19191a;
+    width: 100%;
+    height: 100vh;
+  }
+  .header{
+    background-color: #19191a;
+    padding: 10% 65% 5% 10%;
+    align-items: flex-start;
+  }
+
+  .inicio{
+    display: flex;
+    align-items:  center;
+    font-size: 1.2rem;
+    padding: 10% 35% 10% 35%;
+    background-color: #19191a;
+    border: solid #a87b05 2px;
+    outline: 0;
+    cursor: pointer;
+    color: #f9db5c;
+    border-radius: 5px;
+  }
+  .inicio:hover{
+    padding:10% 35% 10% 35%;
+    background-color: #19191a;
+    border: solid 373739 1px;
+    color:#f9db5c;
+    box-shadow: 3px 3px 5px #a87b05;
+    transform: translateY(-3%);
+  }
+  .sesion{
+    display: flex;
+    align-items:  center;
+    margin: 5px;
+    font-size: 1.2rem;
+    padding: 2%;
+    background-color: #f9db5c;
+    border: solid #a87b05 1px;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    font-size: 1.1rem;
+    border-radius: 25px;
+  }
+  .sesion:hover{
+    padding:2%;
+    background-color: #f9db5c;
+    border: solid 373739 1px;
+    color:#373739;
+    font-size: 1.1rem;
+    transform: translateY(-5%);
+  }
+  .font-bold{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1.15rem;
+  }
+  .font-bold2{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #19191a;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+}
+@media (min-width: 1100px) and (max-width: 1550px){
+  .form-content{
+    display: grid !important;
+		align-content: center !important;
+    padding: 0px 20px 600px 30px;
+    background-color: #19191a;
+    width: 100%;
+    height: 100vh;
+  }
+  .header{
+    background-color: #19191a;
+    padding: 5% 75% 13% 5%;
+    align-items: flex-start;
+  }
+
+  .inicio{
+    display: flex;
+    align-items:  center;
+    font-size: 1.2rem;
+    padding: 5% 20% 5% 20%;
+    margin-top: 5px;
+    background-color: #19191a;
+    border: solid #a87b05 2px;
+    outline: 0;
+    cursor: pointer;
+    color: #f9db5c;
+    border-radius: 5px;
+  }
+  .inicio:hover{
+    padding: 5% 20% 5% 20%;
+    background-color: #19191a;
+    border: solid 373739 1px;
+    color:#f9db5c;
+    box-shadow: 3px 3px 5px #a87b05;
+    transform: translateY(-3%);
+  }
+  .sesion{
+    display: flex;
+    align-items:  center;
+    margin: 2%;
+    font-size: 1.2rem;
+    padding: 2% 5%;
+    background-color: #f9db5c;
+    border: solid #a87b05 1px;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    font-size: 1.1rem;
+    border-radius: 25px;
+  }
+  .sesion:hover{
+    padding:2% 5%;
+    background-color: #f9db5c;
+    border: solid 373739 1px;
+    color:#373739;
+    font-size: 1.1rem;
+    transform: translateY(-5%);
+  }
+  .font-bold{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1.15rem;
+  }
+  .font-bold2{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #19191a;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+}
 </style>

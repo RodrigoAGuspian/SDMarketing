@@ -25,7 +25,7 @@ export default {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    background-color: rgba(55, 55, 57, 0.8); /* Fondo semitransparente */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -33,8 +33,8 @@ export default {
 }
 
 .loader {
-  border: 12px solid #f3f3f3; /* Light grey */
-  border-top: 12px solid black; /* Blue */
+  border: 12px solid #ffff94; /* Light grey */
+  border-top: 12px solid #a87b05; /* Blue */
   border-radius: 50%;
   width: 64px;
   height: 64px;

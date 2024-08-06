@@ -148,26 +148,26 @@ export default defineComponent({
 
 <template>
   <loading-overlay :show="isLoading" />
-
-    <header class="flex justify-between items-start p-6">
-      <RouterLink to="/"><Button>Inicio</Button></RouterLink>
+    <header class="header">
+      <RouterLink to="/"><Button class = "inicio">Inicio</Button></RouterLink>
         
     </header>
-    <section class="max-w-lg my-6 mx-auto p-6 bg-white shadow-md rounded">
+    <section class="form-content max-w-lg mx-auto p-6 shadow-md">
+      <div class="container">
         <h1 class="text-2xl font-bold mb-4">Finalizar Turno</h1>
         <Select v-model="selectedUsername">
-            <SelectTrigger>
+            <SelectTrigger class="font-bold3">
             <SelectValue placeholder="Buscar por username..." />
             </SelectTrigger>
-            <SelectContent>
-            <div class="relative w-full items-center">
-                <Input id="search" v-model="searchQuery" @input="searchModels" type="text" placeholder="Buscar por username..." class="pl-10 w-full" />
+            <SelectContent class="select">
+            <div class="font-bold2 relative w-full items-center">
+                <Input id="search" v-model="searchQuery" @input="searchModels" type="text" placeholder="Buscar por username..." class="font-bold2 pl-10 w-full" />
                 <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
-                <Search class="size-6 text-muted-foreground" />
+                <Search class="font-bold2 size-6 text-muted-foreground" />
                 </span>
             </div>
-            <SelectGroup>
-                <SelectLabel>Resultados</SelectLabel>
+            <SelectGroup class="select">
+                <SelectLabel class="font-bold2">Resultados</SelectLabel>
                 <SelectItem v-for="modelo in filteredModels" :key="modelo.id" :value="modelo.username" >
                 <span>{{ modelo.username }}</span>
                 </SelectItem>
@@ -175,17 +175,134 @@ export default defineComponent({
             </SelectContent>
         </Select>
         <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">Ganancias:</label>
+        <label class="block text-gray-700 text-sm font-bold mb-2 mt-5">Ganancias:</label>
         <div v-for="plataforma in plataformasDisponibles" :key="plataforma" class="mb-2">
-            <label class="block text-gray-600">{{ plataforma }}:</label>
-            <input v-model="ganancias[plataforma]" type="number" class="w-full px-3 py-2 border rounded" />
+            <label class="font-bold2 block text-gray-600">{{ plataforma }}:</label>
+            <input v-model="ganancias[plataforma]" type="number" class=" font-bold3 w-full px-3 py-2 border rounded" />
         </div>
         </div>
         <div class="flex items-center justify-end space-x-2 py-2">
             <div class="space-x-2">
-            <RouterLink to="/"><Button>Cancelar</Button></RouterLink>
-            <Button @click="finalizarTurno" >Finalizar</Button>
+            <RouterLink to="/"><Button class = "sesion">Cancelar</Button></RouterLink>
+            <Button class = "sesion" @click="finalizarTurno" >Finalizar</Button>
             </div>
         </div>
+      </div>
     </section>
 </template>
+
+<style scoped>
+
+  .inicio{
+    display: flex;
+    align-items:  center;
+    font-size: 1.2rem;
+    padding: 5px 25px 5px 25px;
+    background-color: #19191a;
+    border: solid #a87b05 2px;
+    outline: 0;
+    cursor: pointer;
+    color: #f9db5c;
+    border-radius: 5px;
+  }
+  .inicio:hover{
+    padding:5px 20px 5px 20px;
+    background-color: #19191a;
+    border: solid 373739 1px;
+    color:#f9db5c;
+    box-shadow: 3px 3px 5px #a87b05;
+    transform: translateY(-3%);
+  }
+  .font-bold{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1.1rem;
+  }
+  .font-bold2{
+    background-color: #19191a;
+    border: none;
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #19191a;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .sesion{
+    align-items:  center;
+    margin: 5px;
+    font-size: 1.2rem;
+    background-color: #f9db5c;
+    border: solid #a87b05 1px;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    border-radius: 5px;
+  }
+  .sesion:hover{
+    background-color: #f9db5c;
+    border: solid 373739 1px;
+    color:#373739;
+    font-size: 1.1rem;
+    transform: translateY(-5%);
+  }
+@media (max-width: 450px){
+  .header{
+    background-color: #19191a;
+    padding: 10% 10% 10% 10%;
+    width: 135%;
+    align-items: flex-start;
+  }
+  .container{
+    width: 100%;
+    height: 120vh;
+  }
+  .form-content{
+    display: grid !important;
+		align-content: center !important;
+    background-color: #19191a !important;
+    margin: 0px 0px 0px 0px;
+  }
+}
+@media (min-width: 450px) and (max-width: 1100px){
+  .header{
+    background-color: #19191a;
+    padding: 10% 10% 10% 10%;
+    width: 100%;
+    align-items: flex-start;
+  }
+  .container{
+    width: 100%;
+    height: 110vh;
+  }
+  .form-content{
+    display: grid !important;
+		align-content: center !important;
+    padding: 0px 30px 250px 30px;
+    margin: 0px 0px 0px 0px;
+    background-color: #19191a;
+  }
+}
+@media (min-width: 1100px) and (max-width: 1550px){
+  .header{
+    background-color: #19191a;
+    padding: 5% 5% 5% 5%;
+    width: 100%;
+    align-items: flex-start;
+  }
+  .container{
+    padding: 0px 0px 0px 0px;
+    height: 110vh;
+  }
+  .form-content{
+    display: grid !important;
+		align-content: center !important;
+    padding: 0px 30px 250px 30px;
+    background-color: #19191a;
+  }
+}
+</style>

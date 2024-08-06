@@ -163,35 +163,76 @@ export default {
 </script>
 
 <template>
-  <Dialog >
+  <Dialog>
     <loading-overlay :show="isLoading" />
     <DialogTrigger as-child>
-      <Button variant="outline">
+      <Button class="button" variant="outline">
         Generar Reporte
       </Button>
     </DialogTrigger>
-    <DialogContent class="sm:max-w-[425px]">
+    <DialogContent class="font-bold2 sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>Reporte de Turnos</DialogTitle>
-        <DialogDescription>
+        <DialogTitle class="font-bold">Reporte de Turnos</DialogTitle>
+        <DialogDescription class="font-bold2">
           Selecciona el rango de fechas y el modelo para ver el reporte de turnos.
         </DialogDescription>
       </DialogHeader>
-      <div class="grid gap-4 py-4">
-        <div class="grid grid-cols-4 items-center gap-4">
+      <div class=" font-bold2 grid gap-4 py-4">
+        <div class="font-bold2 grid grid-cols-4 items-center gap-4">
           <Label for="startDate" class="text-right">
             Fecha Inicio
           </Label>
-          <Input id="startDate" type="date" v-model="startDateInput" class="col-span-3" />
+          <Input id="startDate" type="date" v-model="startDateInput" class="font-bold3 col-span-3" />
         </div>
         <div class="grid grid-cols-4 items-center gap-4">
           <Label for="endDate" class="text-right">
             Fecha Fin
           </Label>
-          <Input id="endDate" type="date" v-model="endDateInput" class="col-span-3" />
+          <Input id="endDate" type="date" v-model="endDateInput" class="font-bold3 col-span-3" />
         </div>
       </div>
-      <Button @click="fetchTurnos">Generar Reporte</Button>
+      <Button class="button" @click="fetchTurnos">Generar Reporte</Button>
     </DialogContent>
   </Dialog>
 </template>
+
+<style scoped>
+  .font-bold{
+    color:#f9db5c ;
+    font-family: 'Karla', sans-serif ;
+    font-size: 1.1rem;
+  }
+  .font-bold2{
+    background-color: #373739;
+    border: none;
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #373739;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+.button{
+    align-items:  center;
+    padding: 0.5% 1.5% 0.5% 1.5%;
+    font-size: 0.9rem;
+    background-color: #f9db5c;
+    border: solid #a87b05 1px;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    border-radius: 5px;
+}
+.button:hover{
+    background-color: #f9db5c;
+    padding: 0.5% 1.5% 0.5% 1.5%;
+    border: solid 373739 1px;
+    color:#373739;
+    font-size: 0.9rem;
+    transform: translateY(-5%);
+  }
+</style>

@@ -14,12 +14,12 @@ const routes = [
     { path: "/", component: Home },
     { path: "/login", component: Login },
     { path: "/finalizar", component: FinishShift},
-    { path: "/modelos", component: Dashboard, meta: { requiresAuth: true } },
-    { path: "/plataformas", component: Plataformas, meta: { requiresAuth: true } },
-    { path: "/modelos/:id", component: Modelo, meta: { requiresAuth: true } },
-    { path: "/turnos/:id", component: TurnoF, meta: { requiresAuth: true } },
-    { path: "/modelos/create", component: ModeloF, meta: { requiresAuth: true } },
-    { path: "/modelos/edit/:id", component: ModeloF, meta: { requiresAuth: true } },
+    { path: "/modelos", component: Dashboard, meta: { requiresAuth: false } },
+    { path: "/plataformas", component: Plataformas, meta: { requiresAuth: false } },
+    { path: "/modelos/:id", component: Modelo, meta: { requiresAuth: false } },
+    { path: "/turnos/:id", component: TurnoF, meta: { requiresAuth: false } },
+    { path: "/modelos/create", component: ModeloF, meta: { requiresAuth: false } },
+    { path: "/modelos/edit/:id", component: ModeloF, meta: { requiresAuth: false } },
 ];
 
 

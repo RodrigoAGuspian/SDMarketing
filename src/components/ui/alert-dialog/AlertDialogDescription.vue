@@ -18,8 +18,18 @@ const delegatedProps = computed(() => {
 <template>
   <AlertDialogDescription
     v-bind="delegatedProps"
-    :class="cn('text-sm text-muted-foreground', props.class)"
+    :class="cn('font-bold2 text-sm text-muted-foreground', props.class)"
   >
     <slot />
   </AlertDialogDescription>
 </template>
+
+<style scoped>
+  .font-bold2{
+    background-color: #373739;
+    border: none;
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+</style>

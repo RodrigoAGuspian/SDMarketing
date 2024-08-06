@@ -19,7 +19,7 @@ const forwardedProps = useForwardProps(delegatedProps)
     v-bind="forwardedProps"
     :class="
       cn(
-        'text-lg font-semibold leading-none tracking-tight',
+        'font-bold3 text-lg font-semibold leading-none tracking-tight',
         props.class,
       )
     "
@@ -27,3 +27,13 @@ const forwardedProps = useForwardProps(delegatedProps)
     <slot />
   </DialogTitle>
 </template>
+
+<style scoped>
+.font-bold3{
+  color:#f9db5c;
+  background-color: #373739;
+  border:solid #a87b05 1px;
+  font-family: 'Karla', sans-serif;
+  font-size: 1rem;
+}
+</style>

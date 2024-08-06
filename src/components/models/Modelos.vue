@@ -107,41 +107,41 @@ function clickModelo(modelo: Modelo) {
 <template>
   <loading-overlay :show="isLoading" />
   <ReporteAll />
-  <div class="w-full">
-    <div class="flex gap-2 items-center py-4">
-      <Input
-        class="max-w-sm"
+  <div class="font-bold2 w-full">
+    <div class="font-bold2 flex gap-2 items-center py-4">
+      <Input 
+        class="font-bold3 max-w-sm"
         placeholder="Filtrar username..."
         :model-value="table.getColumn('username')?.getFilterValue() as string"
         @update:model-value=" table.getColumn('username')?.setFilterValue($event)"
       />
     </div>
-    <div class="rounded-md border">
+    <div class="font-bold3 rounded-md border">
       <Table>
-        <TableHeader>
-          <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
-            <TableHead v-for="header in headerGroup.headers" :key="header.id">
+        <TableHeader >
+          <TableRow class="font-bold3" v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableHead class="font-bold2" v-for="header in headerGroup.headers" :key="header.id">
               <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
             </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <template v-if="table.getRowModel().rows?.length">
-            <TableRow
+            <TableRow class="font-bold3"
               v-for="row in table.getRowModel().rows"
               :key="row.id"
               @click = "clickModelo(row.original)"
             >
-              <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+              <TableCell class="font-bold2" v-for="cell in row.getVisibleCells()" :key="cell.id">
                 <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
               </TableCell>
             </TableRow>
           </template>
 
           <TableRow v-else>
-            <TableCell
+            <TableCell 
               :colspan="columns.length"
-              class="h-24 text-center"
+              class="font-bold2 h-24 text-center"
             >
               No hay resultados.
             </TableCell>
@@ -150,9 +150,9 @@ function clickModelo(modelo: Modelo) {
       </Table>
     </div>
 
-    <div class="flex items-center justify-end space-x-2 py-4">
-      <div class="space-x-2">
-        <Button
+    <div class="flex items-center justify-end py-2">
+      <div class="space-x-2 flex items-center justify-end py-1">
+        <Button class = "button"
           variant="outline"
           size="sm"
           :disabled="!table.getCanPreviousPage()"
@@ -160,7 +160,7 @@ function clickModelo(modelo: Modelo) {
         >
           Anterior
         </Button>
-        <Button
+        <Button class = "button"
           variant="outline"
           size="sm"
           :disabled="!table.getCanNextPage()"
@@ -171,5 +171,47 @@ function clickModelo(modelo: Modelo) {
       </div>
     </div>
   </div>
-  
 </template>
+
+<style scoped>
+  .font-bold{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1.1rem;
+  }
+  .font-bold2{
+    background-color: #19191a;
+    border: none;
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #19191a;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .button{
+    display: flex;
+    align-items:  center;
+    margin: 5px;
+    font-size: 0.8rem;
+    padding: 6%;
+    background-color: #f9db5c;
+    border: solid #a87b05 1px;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    border-radius: 5px;
+  }
+  .button:hover{
+    padding: 6%;
+    background-color: #f9db5c;
+    border: solid 373739 1px;
+    color:#373739;
+    font-size: 0.8rem;
+    transform: translateY(-5%);
+  }
+</style>

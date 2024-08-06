@@ -149,11 +149,11 @@ export default defineComponent({
       <label class="block text-gray-700 text-sm font-bold mb-2">Modelo:</label>
       <input v-model="form.modelo" type="text" class="w-full px-3 py-2 border rounded" readonly>
     </div>
-    <div class="flex justify-between items-center">
+    <div class="font-bold flex justify-between items-center">
       <Button class="" type="submit">Actualizar</Button>
       <AlertDialog>
         <AlertDialogTrigger as-child>
-          <Button class="bg-red-500 text-white px-4 py-2 rounded" variant="outline">Eliminar</Button>
+          <Button class="button bg-red-500 text-white px-4 py-2 rounded" variant="outline">Eliminar</Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -172,3 +172,74 @@ export default defineComponent({
   </form>
 </template>
 
+<style scoped>
+  #labels{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1.1rem;
+  }
+  .seccion{
+    background-color: #19191a;
+    width: 100%;
+    height: 60vh;
+  }
+  .seccion2{
+    background-color: #19191a;
+  }
+  .card{
+    background-color: #2f2f2f;
+    border: solid #a87b05;
+  }
+  .button{
+    align-items:  center;
+    margin: 5px;
+    padding: 3px 10px 3px 10px;
+    font-size: 1rem;
+    background-color: #f9db5c ;
+    border: solid #a87b05 1px ;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    border-radius: 5px;
+  }
+  .font-bold{
+    color:#f9db5c ;
+    font-family: 'Karla', sans-serif ;
+    font-size: 1.1rem;
+  }
+  .font-bold2{
+    background-color: #2f2f2f;
+    border: none;
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #19191a;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .button2{
+    display: flex;
+    align-items:  center;
+    font-size: 1rem;
+    padding: 6% ;
+    background-color: #2f2f2f;
+    border: solid #a87b05 2px;
+    outline: 0;
+    cursor: pointer;
+    color: #f9db5c;
+    border-radius: 5px;
+}
+.button2:hover{
+    padding:6%;
+    background-color: #373739;
+    border: solid 373739 1px;
+    color:#f9db5c;
+    box-shadow: 3px 3px 5px #a87b05;
+    transform: translateY(-3%);
+}
+
+</style>

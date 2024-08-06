@@ -146,34 +146,34 @@ function getDateHasta(hastaDate: string)  {
   <loading-overlay :show="isLoading" />
 
   <HeaderP />
-  <nav class="flex justify-between items-center px-6">
-    <RouterLink to="/modelos"><Button>Lista de Modelos</Button></RouterLink>
+  <nav class="seccion2 flex justify-between items-center px-6">
+    <RouterLink to="/modelos"><Button class="button">Lista de Modelos</Button></RouterLink>
   </nav>
-
-  <section class="flex gap-4 p-6">
-    <Card class="w-1/4">
+  <div class="container">
+  <section class="seccion flex gap-4 p-6">
+    <Card class="card w-1/4">
       <CardHeader>
         <CardTitle>
-          <h2 class="text-xl font-bold mb-4">Nombre: <span class="font-normal">{{ modelo?.nombre }}</span></h2>
+          <h2 class="font-bold text-xl mb-4">Nombre: <span class="font-bold font-normal">{{ modelo?.nombre }}</span></h2>
         </CardTitle>
-        <h2 class="text-xl font-bold mb-4">Username: <span class="font-normal">{{ modelo?.username }}</span></h2>
-        <h2 class="text-xl font-bold mb-4">Jornada: <span class="font-normal">{{ modelo?.jornada }}</span></h2>
-        <h2 class="text-xl font-bold mb-4">Plataformas:</h2>
+        <h2 class="font-bold text-xl mb-4">Username: <span class="font-bold font-normal">{{ modelo?.username }}</span></h2>
+        <h2 class="text-xl font-bold mb-4">Jornada: <span class="font-bold font-normal">{{ modelo?.jornada }}</span></h2>
+        <h2 class="text-xl font-bold mb-4" id="labels">Plataformas:</h2>
         <ul class="text-xl list-disc list-inside">
           <li v-for="(plataforma, index) in modelo?.plataformas" :key="index" class="ml-4">{{ plataforma }}</li>
         </ul>
       </CardHeader>
       <CardFooter class="flex justify-center gap-2">
-        <Button @click="goEdit(modelo?.id)" >Editar modelo</Button>
+        <Button class="button2" @click="goEdit(modelo?.id)" >Editar modelo</Button>
         <Reporte />
       </CardFooter>
     </Card>
 
-    <Card class="w-3/4">
+    <Card class="card w-3/4">
       <div class="overflow-x-auto">
         <Table>
           <TableHeader>
-            <TableRow v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
+            <TableRow  v-for="headerGroup in table.getHeaderGroups()" :key="headerGroup.id">
               <TableHead v-for="header in headerGroup.headers" :key="header.id">
                 <FlexRender v-if="!header.isPlaceholder" :render="header.column.columnDef.header" :props="header.getContext()" />
               </TableHead>
@@ -182,13 +182,13 @@ function getDateHasta(hastaDate: string)  {
           <TableBody>
             <template v-if="table.getRowModel().rows?.length">
               <TableRow v-for="row in table.getRowModel().rows" :key="row.id" @click = "clickTurno(row.original)">
-                <TableCell v-for="cell in row.getVisibleCells()" :key="cell.id">
+                <TableCell  v-for="cell in row.getVisibleCells()" :key="cell.id">
                   <FlexRender :render="cell.column.columnDef.cell" :props="cell.getContext()" />
                 </TableCell>
               </TableRow>
             </template>
-            <TableRow v-else>
-              <TableCell :colspan="columns.length" class="h-24 text-center">
+            <TableRow  v-else>
+              <TableCell :colspan="columns.length" class="font-bold2 h-24 text-center">
                 No hay resultados.
               </TableCell>
             </TableRow>
@@ -197,7 +197,7 @@ function getDateHasta(hastaDate: string)  {
       </div>
       <div class="flex items-center justify-end space-x-2 p-4">
         <div class="space-x-2">
-          <Button
+          <Button class="button"
             variant="outline"
             size="sm"
             :disabled="!table.getCanPreviousPage()"
@@ -205,7 +205,7 @@ function getDateHasta(hastaDate: string)  {
           >
             Anterior
           </Button>
-          <Button
+          <Button class="button"
             variant="outline"
             size="sm"
             :disabled="!table.getCanNextPage()" 
@@ -218,5 +218,112 @@ function getDateHasta(hastaDate: string)  {
     </Card>
     
   </section>
-
+</div>
 </template>
+
+<style scoped>
+  #labels{
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1.1rem;
+  }
+  .seccion{
+    background-color: #19191a;
+    width: 100%;
+    height: 60vh;
+  }
+  .seccion2{
+    background-color: #19191a;
+  }
+  .card{
+    background-color: #2f2f2f;
+    border: solid #a87b05;
+  }
+  .button{
+    align-items:  center;
+    margin: 5px;
+    padding: 3px 10px 3px 10px;
+    font-size: 1rem;
+    background-color: #f9db5c ;
+    border: solid #a87b05 1px ;
+    outline: 0;
+    cursor: pointer;
+    color: #373739;
+    border-radius: 5px;
+  }
+  .font-bold{
+    color:#f9db5c ;
+    font-family: 'Karla', sans-serif ;
+    font-size: 1.1rem;
+  }
+  .font-bold2{
+    background-color: #2f2f2f;
+    border: none;
+    color:#f9db5c;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .font-bold3{
+    color:#f9db5c;
+    background-color: #19191a;
+    border:solid #a87b05 1px;
+    font-family: 'Karla', sans-serif;
+    font-size: 1rem;
+  }
+  .button2{
+    display: flex;
+    align-items:  center;
+    font-size: 1rem;
+    padding: 6% ;
+    background-color: #2f2f2f;
+    border: solid #a87b05 2px;
+    outline: 0;
+    cursor: pointer;
+    color: #f9db5c;
+    border-radius: 5px;
+}
+.button2:hover{
+    padding:6%;
+    background-color: #373739;
+    border: solid 373739 1px;
+    color:#f9db5c;
+    box-shadow: 3px 3px 5px #a87b05;
+    transform: translateY(-3%);
+}
+@media (max-width: 450px){
+  .container{
+    background-color: #19191a;
+    width: 170%;
+    height: 145vh;
+    margin:0px 0px 0px 0px;
+  }
+  .seccion2{
+    background-color: #19191a;
+    width: 170%;
+  }
+}
+@media (min-width: 450px) and (max-width: 1100px){
+  .container{
+    background-color: #19191a;
+    width: 120%;
+    height: 95vh;
+    margin:0px 0px 0px 0px;
+  }
+  .seccion2{
+    background-color: #19191a;
+    width: 120%;
+  }
+}
+@media (min-width: 1100px) and (max-width: 1550px){
+  .container{
+    background-color: #19191a;
+    width: 100%;
+    height: 80vh;
+    margin:0px 0px 0px 0px;
+  }
+  .seccion2{
+    background-color: #19191a;
+    width: 100%;
+  }
+}
+</style>
