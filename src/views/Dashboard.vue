@@ -74,5 +74,7 @@ import Button from '@/components/ui/button/Button.vue';
     height: 115vh;
     background-color: #19191a;
 }
+
 }
+
 </style>
