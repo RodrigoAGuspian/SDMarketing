@@ -15,10 +15,17 @@ function logout(){
 </script>
 <template>
     <header class="flex justify-between items-center p-6">
-        <h1 class="font-black opacity-80 ">SD Marketing</h1>
+        <h1 class="font-black text-gray-200 text-header">SD Marketing</h1>
 
         <nav class="flex flex-row gap-x-4"> 
             <Button v-on:click="logout">Cerrar sesion</Button>
         </nav>
     </header>
 </template>
+
+<style>
+.text-header{
+    font-family: 'Karla', sans-serif;
+}
+
+</style>
