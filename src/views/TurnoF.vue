@@ -172,7 +172,7 @@ export default defineComponent({
   </form>
 </template>
 
-<style scoped>
+<style>
   #labels{
     color:#f9db5c;
     font-family: 'Karla', sans-serif;

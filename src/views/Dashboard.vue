@@ -18,7 +18,7 @@ import Button from '@/components/ui/button/Button.vue';
     </section>
 </template>
 
-<style scoped>
+<style>
 
 .button{
     display: flex;

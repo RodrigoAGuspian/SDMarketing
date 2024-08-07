@@ -43,7 +43,7 @@ const onSubmit = handleSubmit((values) => {
   .then((userCredential) => {
     // Signed in 
     //const user = userCredential.user;
-    isLoading.value = false;
+    isLoading.value = true;
     router2.push('/modelos');
     $toast.success('Se ha iniciado sesión correctamente.');
     
@@ -100,7 +100,7 @@ const onSubmit = handleSubmit((values) => {
   </section>
 </template>
 
-<style scoped>
+<style>
 @media (max-width: 412px){
   .form-content{
     display: grid !important;

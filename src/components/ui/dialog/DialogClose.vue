@@ -10,7 +10,7 @@ const props = defineProps<DialogCloseProps>()
   </DialogClose>
 </template>
 
-<style scoped>
+<style>
   .font-bold2{
     background-color: #373739;
     border: none;

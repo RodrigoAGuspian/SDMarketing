@@ -19,7 +19,7 @@ const delegatedProps = computed(() => {
   </AlertDialogCancel>
 </template>
 
-<style scoped>
+<style>
   .font-bold3{
     color:#f9db5c;
     background-color: #373739;

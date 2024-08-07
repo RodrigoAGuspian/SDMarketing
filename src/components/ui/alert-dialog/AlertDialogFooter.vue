@@ -20,7 +20,7 @@ const props = defineProps<{
   </div>
 </template>
 
-<style scoped>
+<style>
 
   .font-bold2{
     background-color: #373739;

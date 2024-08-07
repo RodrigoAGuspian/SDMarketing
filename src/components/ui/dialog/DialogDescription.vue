@@ -23,7 +23,7 @@ const forwardedProps = useForwardProps(delegatedProps)
   </DialogDescription>
 </template>
 
-<style scoped>
+<style>
   .font-bold2{
     background-color: #373739;
     border: none;

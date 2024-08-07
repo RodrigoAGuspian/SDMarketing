@@ -19,7 +19,7 @@ const delegatedProps = computed(() => {
   </AlertDialogAction>
 </template>
 
-<style scoped>
+<style>
 
   .font-bold3{
     align-items:  center;

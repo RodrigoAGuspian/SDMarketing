@@ -18,7 +18,7 @@ const props = defineProps<{ class?: HTMLAttributes['class'] }>()
   </div>
 </template>
 
-<style scoped>
+<style>
   .font-bold2{
     background-color: #373739;
     border: none;

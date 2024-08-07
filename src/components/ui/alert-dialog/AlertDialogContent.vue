@@ -43,7 +43,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
   </AlertDialogPortal>
 </template>
 
-<style scoped>
+<style>
 .alert{
   background-color: #373739;
   border-color: #a87b05;

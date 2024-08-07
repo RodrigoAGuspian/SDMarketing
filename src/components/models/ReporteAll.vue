@@ -220,7 +220,7 @@ export default {
 
 </template>
 
-<style scoped>
+<style>
 .button{
     align-items:  center;
     margin: 5px;

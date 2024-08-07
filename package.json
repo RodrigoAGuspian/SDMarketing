@@ -32,6 +32,8 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240614.0",
+    "@iconify-json/radix-icons": "^1.1.15",
+    "@iconify/vue": "^4.1.2",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.12.5",
     "@vitejs/plugin-vue": "^5.0.4",

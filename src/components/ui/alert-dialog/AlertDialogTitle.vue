@@ -21,7 +21,7 @@ const delegatedProps = computed(() => {
   </AlertDialogTitle>
 </template>
 
-<style scoped>
+<style>
   .font-bold2{
     background-color: #373739;
     border: none;

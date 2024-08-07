@@ -177,7 +177,7 @@ export default defineComponent({
   </template>
 
 
-<style scoped>
+<style>
   *{
     background-color: #19191a;
     border: none;

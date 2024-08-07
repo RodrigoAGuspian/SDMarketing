@@ -139,7 +139,7 @@ export default defineComponent({
   </div>
 </template>
 
-<style scoped>
+<style>
   .button{
     align-items:  center;
     margin: 5px;

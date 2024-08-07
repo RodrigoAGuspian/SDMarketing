@@ -173,7 +173,7 @@ function clickModelo(modelo: Modelo) {
   </div>
 </template>
 
-<style scoped>
+<style>
   .font-bold{
     color:#f9db5c;
     font-family: 'Karla', sans-serif;

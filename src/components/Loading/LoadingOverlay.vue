@@ -18,7 +18,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .custom-loading {
     position: fixed;
     top: 0;
