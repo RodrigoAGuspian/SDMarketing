@@ -152,8 +152,12 @@ export default defineComponent({
       <RouterLink to="/"><Button class = "inicio">Inicio</Button></RouterLink>
         
     </header>
+<<<<<<< HEAD
     <section class="form-content max-w-lg mx-auto p-6 shadow-md">
       <div class="container">
+=======
+    <section class="max-w-lg my-6 mx-auto p-6 bg-dark shadow-md rounded">
+>>>>>>> b11030d
         <h1 class="text-2xl font-bold mb-4">Finalizar Turno</h1>
         <Select v-model="selectedUsername">
             <SelectTrigger class="font-bold3">
@@ -175,10 +179,17 @@ export default defineComponent({
             </SelectContent>
         </Select>
         <div class="mb-4">
+<<<<<<< HEAD
         <label class="block text-gray-700 text-sm font-bold mb-2 mt-5">Ganancias:</label>
         <div v-for="plataforma in plataformasDisponibles" :key="plataforma" class="mb-2">
             <label class="font-bold2 block text-gray-600">{{ plataforma }}:</label>
             <input v-model="ganancias[plataforma]" type="number" class=" font-bold3 w-full px-3 py-2 border rounded" />
+=======
+        <label class="block text-sm font-bold mb-2">Ganancias:</label>
+        <div v-for="plataforma in plataformasDisponibles" :key="plataforma" class="mb-2">
+            <label class="block">{{ plataforma }}:</label>
+            <Input v-model="ganancias[plataforma]" type="number" class="w-full px-3 py-2 border rounded" />
+>>>>>>> b11030d
         </div>
         </div>
         <div class="flex items-center justify-end space-x-2 py-2">
@@ -190,6 +201,9 @@ export default defineComponent({
       </div>
     </section>
 </template>
+<<<<<<< HEAD
 
 <style>
 </style>
+=======
+>>>>>>> b11030d

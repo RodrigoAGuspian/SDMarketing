@@ -14,6 +14,7 @@ function logout(){
 }
 </script>
 <template>
+<<<<<<< HEAD
     <header class="header flex justify-between items-center p-6 ">
         <nav class = "cont">
           <div class="nav-cont">
@@ -21,6 +22,11 @@ function logout(){
             <p>Marketing</p>
           </div>
         </nav>
+=======
+    <header class="flex justify-between items-center p-6">
+        <h1 class="font-black text-gray-200 text-header">SD Marketing</h1>
+
+>>>>>>> b11030d
         <nav class="flex flex-row gap-x-4"> 
             <Button class="button" v-on:click="logout">Cerrar sesion</Button>
         </nav>
@@ -28,6 +34,7 @@ function logout(){
 </template>
 
 <style>
+<<<<<<< HEAD
 .button{
     align-items:  center;
     margin: 5px;
@@ -94,4 +101,10 @@ li{
     height: 20vh;
 }
 }
+=======
+.text-header{
+    font-family: 'Karla', sans-serif;
+}
+
+>>>>>>> b11030d
 </style>

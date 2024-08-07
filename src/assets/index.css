@@ -3,7 +3,10 @@
 @tailwind utilities;
  
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> b11030d
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -66,3 +69,16 @@
     --ring:35.5 91.7% 32.9%;
   }
 }
+<<<<<<< HEAD
+=======
+
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+>>>>>>> b11030d
